@@ -94,8 +94,6 @@ INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
-INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/enumitem/enumitem.sty
-INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/graphics/color.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/graphics/color.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg
@@ -150,9 +148,7 @@ INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm
-INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm
 INPUT /usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT SURF_Summary.aux
 INPUT ./SURF_Summary.out
 INPUT ./SURF_Summary.out
@@ -168,4 +164,3 @@ INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb
-INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb
