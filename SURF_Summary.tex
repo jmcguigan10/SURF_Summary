@@ -23,7 +23,7 @@ The network outputs a calibrated $P(\mathrm{FFI}\mid x)$ per grid cell, replacin
 
 \subsection*{Background \& Physics}
 Neutrinos carry away $\gtrsim 99\%$ of the gravitational binding energy in core collapse, and their angular electron-lepton-number (ELN) spectra can admit crossings that seed FFI.
-In the mean-field limit, the flavor density matrix $\rho_{\mathbf{p}}$ obeys
+In the mean-field limit, the flavor density matrix $\rho_{\mathbf{p}}$ is
 \begin{equation*}
 i\,\partial_t \rho_{\mathbf{p}} = \left[ H_{\mathrm{vac}} + H_{\mathrm{mat}} + H_{\nu\nu}, \, \rho_{\mathbf{p}} \right],
 \end{equation*}
@@ -31,7 +31,7 @@ with the self-interaction term
 \begin{equation*}
 H_{\nu\nu} \propto \mu \!\int (1-\cos\theta)\, G(\mathbf{v})\, d\Omega,
 \end{equation*}
-where $G(\mathbf{v})$ is the ELN angular distribution and $\mu$ sets the interaction scale. The presence of ELN crossings can drive flavor conversion on microscopic (cm/ns) scales that are numerically prohibitive to resolve directly across all cells in multidimensional simulations.
+where $G(\mathbf{v})$ is the ELN angular distribution and $\mu$ sets the interaction scale. The presence of ELN crossings can drive flavor conversion on microscopic (cm/ns) scales that are numerically difficult to resolve directly across all cells in neutrino transport simulations.
 
 \subsection*{Data \& Features}
 Labeled examples consist of $\sim 8\times 10^5$ per-cell snapshots (stable versus FFI-unstable) drawn from CCSN and NSM datasets.
@@ -63,10 +63,10 @@ Seed & Recall & Precision & $F_1$ \\\midrule
 \end{center}
 
 Median performance across top configurations sits near $F_1 \approx 0.94$--$0.95$ with high precision ($\approx$0.97--0.98) and strong recall ($\approx$0.90--0.92).
-I also trained smaller variants (fewer layers and narrower widths) to minimize inference cost for in-situ usage; these retain competitive $F_1$ with modest drops in recall.
+I also trained smaller variants (fewer layers and narrower widths) to minimize inference cost; these retain competitive $F_1$ with modest drops in recall.
 
 \subsection*{Deployment Plan \& Impact}
-For in-situ prediction, the model is exported to TorchScript/ONNX and run as batch per-cell inference on CPU or GPU within radiation-hydrodynamics codes.
+For in-situ prediction, the model is exported to TorchScript and run as batch per-cell inference on CPU or GPU within radiation-hydrodynamics codes.
 The resulting $P(\mathrm{FFI}\mid x)$ serves as a flag or risk score that enables flavor-aware closures or triggers higher-fidelity solvers only where instability is likely.
 The architecture is constrained for real-time deployability, and end-to-end wall-time benchmarks on production grids are the next step.
 
