@@ -4,8 +4,6 @@
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
-\usepackage{enumitem}
-\setlist[itemize]{itemsep=0.25em, topsep=0.25em}
 \setlength{\parskip}{0.35em}
 \setlength{\parindent}{0pt}
 
@@ -36,30 +34,23 @@ H_{\nu\nu} \propto \mu \!\int (1-\cos\theta)\, G(\mathbf{v})\, d\Omega,
 where $G(\mathbf{v})$ is the ELN angular distribution and $\mu$ sets the interaction scale. The presence of ELN crossings can drive flavor conversion on microscopic (cm/ns) scales that are numerically prohibitive to resolve directly across all cells in multidimensional simulations.
 
 \subsection*{Data \& Features}
-\begin{itemize}
-  \item Labeled examples: $\sim 8\times 10^5$ per-cell snapshots (stable vs.\ FFI-unstable), drawn from CCSN and NSM datasets.
-  \item Feature vector: 27 scalars per cell (thermodynamic and neutrino-moment quantities including density, $Y_e$, entropy, flux integrals, ELN-crossing proxies).
-  \item Class balance: $\approx$5--6\% unstable.
-  \item Train/validation split: 80/20 with fixed folds; multiple deterministic seeds used to test reproducibility.
-\end{itemize}
+Labeled examples consist of $\sim 8\times 10^5$ per-cell snapshots (stable versus FFI-unstable) drawn from CCSN and NSM datasets.
+The feature vector holds 27 scalars per cell capturing thermodynamic and neutrino-moment quantities such as density, $Y_e$, entropy, flux integrals, and ELN-crossing proxies.
+The dataset is imbalanced with only $\approx$5--6\% unstable cells, and an 80/20 train/validation split with fixed folds and multiple deterministic seeds tests reproducibility.
 
 \subsection*{Model \& Training}
-\begin{itemize}
-  \item Architecture: fully-connected MLP (4--6 hidden layers, widths in the few-hundreds), ReLU activations, BatchNorm, dropout.
-  \item Loss \& imbalance handling: class-weighted binary cross-entropy with $L_2$ regularization,
-  \begin{equation*}
-  \mathcal{L} = -w_1\, y\log \hat y - w_0 (1-y)\log(1-\hat y) + \lambda \sum_{\ell}\lVert W_\ell\rVert_2^2,
-  \end{equation*}
-  optimized with AdamW and a cosine/step learning-rate schedule.
-  \item Batching \& schedules: batch sizes $4\,096$--$16\,384$; learning rate $\sim 3\times 10^{-3}$ with decay; early stopping to prevent overfitting.
-  \item Thresholding: sweep the classification cutoff on $P(\mathrm{FFI}\mid x)$ to maximize the $F_1$ score (balances precision and recall).
-\end{itemize}
+The classifier is a fully connected MLP with 4--6 hidden layers a few hundred neurons wide, using ReLU activations, BatchNorm, and dropout.
+Training employs class-weighted binary cross-entropy with $L_2$ regularization,
+\begin{equation*}
+\mathcal{L} = -w_1\, y\log \hat y - w_0 (1-y)\log(1-\hat y) + \lambda \sum_{\ell}\lVert W_\ell\rVert_2^2,
+\end{equation*}
+and is optimized with AdamW and a cosine/step learning-rate schedule.
+Batch sizes of $4\,096$--$16\,384$ start near $3\times 10^{-3}$ learning rate with decay and early stopping to prevent overfitting.
+After training, the classification cutoff on $P(\mathrm{FFI}\mid x)$ is swept to maximize the $F_1$ score, balancing precision and recall.
 
 \subsection*{Validation \& Reproducibility}
-\begin{itemize}
-  \item Metrics: precision, recall, $F_1 = \frac{2PR}{P+R}$ on a held-out test set.
-  \item Results at the best cutoff are stable across seeds; representative numbers are below.
-\end{itemize}
+Precision, recall, and $F_1 = \frac{2PR}{P+R}$ are measured on a held-out test set.
+Results at the optimal cutoff remain stable across seeds; representative numbers are below.
 
 \begin{center}
 \begin{tabular}{@{}lccc@{}}
@@ -75,20 +66,16 @@ Median performance across top configurations sits near $F_1 \approx 0.94$--$0.95
 I also trained smaller variants (fewer layers and narrower widths) to minimize inference cost for in-situ usage; these retain competitive $F_1$ with modest drops in recall.
 
 \subsection*{Deployment Plan \& Impact}
-\begin{itemize}
-  \item \textbf{In-situ prediction:} export to TorchScript/ONNX and batch per-cell inference on CPU or GPU within radiation-hydrodynamics codes.
-  \item \textbf{Usage:} treat $P(\mathrm{FFI}\mid x)$ as a flag or risk score to (i) enable flavor-aware closures, or (ii) trigger higher-fidelity solvers only where the network predicts instability.
-  \item \textbf{Speed-aware design:} architecture constrained for real-time deployability; end-to-end wall-time benchmarks on production grids are the next step.
-\end{itemize}
+For in-situ prediction, the model is exported to TorchScript/ONNX and run as batch per-cell inference on CPU or GPU within radiation-hydrodynamics codes.
+The resulting $P(\mathrm{FFI}\mid x)$ serves as a flag or risk score that enables flavor-aware closures or triggers higher-fidelity solvers only where instability is likely.
+The architecture is constrained for real-time deployability, and end-to-end wall-time benchmarks on production grids are the next step.
 
-\subsection*{What I Build So Far}
-\begin{itemize}
-  \item End-to-end PyTorch training pipeline (data loaders, augmentation hooks, logging, and plotting).
-  \item Automated hyperparameter searches over depth, width, dropout, weight decay, batch size, and learning-rate schedules with early stopping.
-  \item Class-weighted training to handle severe imbalance; threshold sweeps and calibration curves to set operating points.
-  \item Reproducibility studies across multiple seeds; convergence diagnostics and overfitting detection.
-  \item Compact models for faster inference while maintaining high sensitivity to the minority class.
-\end{itemize}
+\subsection*{Progress to Date}
+I built an end-to-end PyTorch training pipeline with data loaders, augmentation hooks, logging, and plotting.
+Automated hyperparameter searches span depth, width, dropout, weight decay, batch size, and learning-rate schedules with early stopping.
+Class-weighted training handles severe imbalance, and threshold sweeps with calibration curves set operating points.
+Reproducibility studies across multiple seeds provide convergence diagnostics and overfitting detection.
+I also developed compact models that retain high sensitivity to the minority class while enabling faster inference.
 
 \textbf{Next Steps.}
 Runtime profiling inside a test hydrodynamics code; uncertainty calibration (temperature scaling, isotonic regression), out-of-distribution checks for new progenitors/NSM conditions, and active-learning loops that prioritize follow-up dispersion solves where the classifier is uncertain.
