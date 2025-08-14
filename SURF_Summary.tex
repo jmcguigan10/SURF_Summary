@@ -63,12 +63,13 @@ Seed & Recall & Precision & $F_1$ \\\midrule
 \end{center}
 
 Median performance across top configurations sits near $F_1 \approx 0.94$--$0.95$ with high precision ($\approx$0.97--0.98) and strong recall ($\approx$0.90--0.92).
+These accuracies are sufficient to guide targeted high-fidelity simulations that probe open questions on the supernova explosion mechanism and $r$-process nucleosynthesis emphasized in the community's long-range plan.
 I also trained smaller variants (fewer layers and narrower widths) to minimize inference cost; these retain competitive $F_1$ with modest drops in recall.
 
 \subsection*{Deployment Plan \& Impact}
 For in-situ prediction, the model is exported to TorchScript and run as batch per-cell inference on CPU or GPU within radiation-hydrodynamics codes.
 The resulting $P(\mathrm{FFI}\mid x)$ serves as a flag or risk score that enables flavor-aware closures or triggers higher-fidelity solvers only where instability is likely.
-The architecture is constrained for real-time deployability, and end-to-end wall-time benchmarks on production grids are the next step.
+The architecture is intentionally kept small to balance accuracy with near-real-time throughput, and the next step is to embed it in a test hydrodynamics run to measure wall-clock savings relative to full dispersion analyses.
 
 \subsection*{Progress to Date}
 I built an end-to-end PyTorch training pipeline with data loaders, augmentation hooks, logging, and plotting.
@@ -78,7 +79,7 @@ Reproducibility studies across multiple seeds provide convergence diagnostics an
 I also developed compact models that retain high sensitivity to the minority class while enabling faster inference.
 
 \textbf{Next Steps.}
-Runtime profiling inside a test hydrodynamics code; uncertainty calibration (temperature scaling, isotonic regression), out-of-distribution checks for new progenitors/NSM conditions, and active-learning loops that prioritize follow-up dispersion solves where the classifier is uncertain.
+Integrate the TorchScript network into a production hydrodynamics code and benchmark its overhead against existing dispersion solvers. Subsequent work will tackle uncertainty calibration (temperature scaling, isotonic regression), out-of-distribution checks for new progenitors/NSM conditions, and active-learning loops that call expensive dispersion calculations when the classifier is uncertain.
 \end{center}
 
 \end{document}
