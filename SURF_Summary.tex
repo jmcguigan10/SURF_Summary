@@ -34,8 +34,9 @@ H_{\nu\nu} \propto \mu \!\int (1-\cos\theta)\, G(\mathbf{v})\, d\Omega,
 where $G(\mathbf{v})$ is the ELN angular distribution and $\mu$ sets the interaction scale. The presence of ELN crossings can drive flavor conversion on microscopic (cm/ns) scales that are numerically difficult to resolve directly across all cells in neutrino transport simulations.
 
 \subsection*{Data \& Features}
-Labeled examples consist of $\sim 8\times 10^5$ per-cell snapshots (stable versus FFI-unstable) drawn from CCSN and NSM datasets.
+Labeled examples consist of $\sim 8\times 10^5$ per-cell snapshots including neutrino distributions drawn from randomly generated datasets and distributions extracted from a dynamical neutron-star-merger (NSM) simulation.
 The feature vector holds 27 scalars per cell capturing thermodynamic and neutrino-moment quantities such as density, $Y_e$, entropy, flux integrals, and ELN-crossing proxies.
+Post-instability neutrino distributions are determined by local simulations of neutrino quantum kinetics.
 The dataset is imbalanced with only $\approx$5--6\% unstable cells, and an 80/20 train/validation split with fixed folds and multiple deterministic seeds tests reproducibility.
 
 \subsection*{Model \& Training}
